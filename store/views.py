@@ -69,7 +69,7 @@ def register_user(request):
     
 def product(request,pk):
     product = Product.objects.get(id=pk)
-    print(product.name)
+    # print(product.name)
     result = recommend(df,product.name)
     results = []
     # print(result)
