@@ -77,7 +77,7 @@ def product(request,pk):
         item = Product.objects.filter(name__istartswith=items)
         if item:
             results.append(item)
-    print(results) 
+    # print(results) 
     quotes = Quote.objects.all()
     random_quotes = random.choice(quotes) if quotes.exists() else None
     return render(request,'product.html',{'product':product,'random_quotes':random_quotes,'recommended':results})
