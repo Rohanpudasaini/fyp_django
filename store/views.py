@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib import messages
 from .forms import SignUpForm
+from store.recommend_main import recommend, df
 import random
 # Create your views here.
 
@@ -13,7 +14,7 @@ def home(request):
     products = Product.objects.all().order_by('-created_at')
     quotes = Quote.objects.all()
     random_quotes = random.choice(quotes) if quotes.exists() else None
-    sale_items = Product.objects.filter(is_sale=True).order_by('-created_at')[:3]
+    sale_items = Product.objects.filter(is_sale=True).order_by('-created_at')[:1]
     return render(request, 'home.html',{'products':products,'sale_items':sale_items,'random_quotes':random_quotes})
 
 def about(request):
@@ -68,6 +69,28 @@ def register_user(request):
     
 def product(request,pk):
     product = Product.objects.get(id=pk)
+    print(product.name)
+    result = recommend(df,product.name)
+    results = []
+    # print(result)
+    for i, items in enumerate(result):
+        item = Product.objects.filter(name__istartswith=items)
+        if item:
+            results.append(item)
+    print(results) 
     quotes = Quote.objects.all()
     random_quotes = random.choice(quotes) if quotes.exists() else None
-    return render(request,'product.html',{'product':product,'random_quotes':random_quotes})
+    return render(request,'product.html',{'product':product,'random_quotes':random_quotes,'recommended':results})
+
+def recommended(request):
+    result = recommend(df,"Harry Potter and the Prisoner of Azkaban Book 3")
+    results = []
+    # print(result)
+    for i, items in enumerate(result):
+        item = Product.objects.filter(name__istartswith=items)
+        if item:
+            results.append(item)
+    # print(results)  
+    quotes = Quote.objects.all()
+    random_quotes = random.choice(quotes) if quotes.exists() else None
+    return render(request, 'recommend.html',{'random_quotes':random_quotes, 'recommended':results})  

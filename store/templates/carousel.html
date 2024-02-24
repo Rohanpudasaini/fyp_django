@@ -12,7 +12,7 @@
                         <p class="text-black text-4xl my-4">{{ item.name }}</p>
                     </a>
                     <a href="{% url 'product' item.id %}">
-                        <p class="text-black inline-block leading-relaxed hover:text-black hover:border-black">{{item.id}}{{ item.description|truncatechars:500 }}</p>
+                        <p class="text-black inline-block leading-relaxed hover:text-black hover:border-black">{{ item.description|truncatechars:500 }}</p>
                     </a>
                     <a href="{% url 'product' item.id %}">
                         <p class="pt-3 text-gray-900" href='#'><strike>रु{{ item.price }}</strike> &nbsp; रु{{ item.sale_price }}</p>
@@ -28,7 +28,7 @@
         </div>
         {% endfor %}
 
-        <!-- Dynamic Navigation Controls -->
+        {% comment %} <!-- Dynamic Navigation Controls -->
         {% for item in sale_items %}
             {% if forloop.first %}
                 <label for="carousel-{{ sale_items|length }}" class="prev control-{{ forloop.counter }} w-10 h-10 ml-2 md:ml-10 absolute cursor-pointer hidden text-3xl font-bold text-black hover:text-white rounded-full bg-white hover:bg-gray-900 leading-tight text-center z-10 inset-y-0 left-0 my-auto">‹</label>
@@ -49,6 +49,6 @@
                     <label for="carousel-{{ forloop.counter }}" class="carousel-bullet cursor-pointer block text-4xl text-gray-400 hover:text-gray-900">•</label>
                 </li>
             {% endfor %}
-        </ol>
+        </ol> {% endcomment %}
     </div>
 </div>
