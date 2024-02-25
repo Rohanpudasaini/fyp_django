@@ -2,3 +2,4 @@ __pycache__/
 DataFrame.csv
 .vscode/
 test/
+test*

@@ -72,8 +72,8 @@ def product(request,pk):
     # print(product.name)
     result = recommend(df,product.name)
     results = []
-    # print(result)
-    for i, items in enumerate(result):
+    print(result)
+    for items in result:
         item = Product.objects.filter(name__istartswith=items)
         if item:
             results.append(item)

@@ -19,6 +19,7 @@ class Customer(models.Model):
     phone = models.CharField(max_length=10) 
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100)
+    
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
@@ -34,15 +35,16 @@ class Product(models.Model):
     name = models.CharField(max_length=100)
     price = models.DecimalField(default=0,decimal_places=2, max_digits=8)
     category = models.ForeignKey(Categorie, on_delete= models.CASCADE, default=1)
-    description = models.CharField(max_length=1050, blank=True, default='', null= True)
-    image = models.ImageField(upload_to='uploads/products/')
+    description = models.CharField(max_length=2050, blank=True, default='', null= True)
+    image = models.ImageField(upload_to='uploads/products/', null=True)
     author = models.CharField(max_length=100, default='Traditional Stories')
     is_sale = models.BooleanField(default=False)
     sale_price = models.DecimalField(default=0,decimal_places=2, max_digits=8)
     created_at = models.DateTimeField(default=datetime.datetime.today)
+    publication = models.CharField(max_length = 100, null=True)
     
     def __str__(self):
-        return self.name
+       return self.name
 
 
 class Order(models.Model):
