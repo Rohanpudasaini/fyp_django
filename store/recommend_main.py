@@ -13,6 +13,7 @@ def recommend(df, book_title):
         # common_books = pd.read_csv('common_books.csv', index_col=0)
 
         if book_title in rare_books:
+            print("rare books")
             most_common=pd.Series(common_books["Book-Title"].unique()).sample(3).values
             # print("No Recommendation for that book")
             books = []
@@ -46,6 +47,7 @@ def recommend(df, book_title):
                 else:
                     book = " ".join(book[:5])
                 books.append(book)
+            print(books)
             return(books)
     else:
         print("We currently have no data of that book.")

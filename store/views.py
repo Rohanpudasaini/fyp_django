@@ -70,7 +70,8 @@ def register_user(request):
 def product(request,pk):
     product = Product.objects.get(id=pk)
     # print(product.name)
-    result = recommend(df,product.name)
+    result = recommend(df,product.name.replace(":", ""))
+    print(product.name.replace(":", ""))
     results = []
     print(result)
     for items in result:
