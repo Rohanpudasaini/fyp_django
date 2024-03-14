@@ -1,3 +1,6 @@
+from store.models import Product
+
+
 class Cart():
  
     def __init__(self, request) -> None:
@@ -16,14 +19,19 @@ class Cart():
         if product_id in self.cart:
             pass
         else:
-            # if product.is_sale:
-                # self.cart[product_id] = {'price':str(product.sale_price)}
-            # else:
-                # self.cart[product_id] = {'price':str(product.price)}
+            if product.is_sale:
+                self.cart[product_id] = {'price':str(product.sale_price)}
+            else:
+                self.cart[product_id] = {'price':str(product.price)}
             # self.cart[product_id] = {'price':str(product.price)}
-            self.cart[product_id] = {'price': str(product.price)}
+            # self.cart[product_id] = {'price': str(product.price)}
         
         self.session.modified = True
         
     def __len__(self):
         return len(self.cart)
+    
+    def get_prods(self):
+        product_ids = self.cart.keys()
+        products = Product.objects.filter(id__in=product_ids)
+        return products
