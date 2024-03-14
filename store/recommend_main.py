@@ -18,11 +18,11 @@ def recommend(df, book_title):
             # print("No Recommendation for that book")
             books = []
             for book in most_common:
-                book = book.split(" ")
-                if len(book) <= 5:
-                    book = " ".join(book)
-                else:
-                    book = " ".join(book[:5])
+                # book = book.split(" ")
+                # if len(book) <= 5:
+                #     book = " ".join(book)
+                # else:
+                #     book = " ".join(book[:5])
                 books.append(book)
             return books
 
@@ -41,11 +41,11 @@ def recommend(df, book_title):
             books=[]
             for i in range(len(similar_booksSorted)):
                 # books.append(common_books[common_books["index"]==similar_booksSorted[i][0]]["Book-Title"].item())
-                book = common_books[common_books["index"]==similar_booksSorted[i][0]]["Book-Title"].item().split(" ")
-                if len(book) <= 5:
-                    book = " ".join(book)
-                else:
-                    book = " ".join(book[:5])
+                book = common_books[common_books["index"]==similar_booksSorted[i][0]]["Book-Title"].item()
+                # if len(book) <= 5:
+                #     book = " ".join(book)
+                # else:
+                #     book = " ".join(book[:5])
                 books.append(book)
             print(books)
             return(books)

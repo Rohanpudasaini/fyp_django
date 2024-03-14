@@ -71,13 +71,13 @@ def product(request,pk):
     product = Product.objects.get(id=pk)
     # print(product.name)
     result = recommend(df,product.name.replace(":", ""))
-    print(product.name.replace(":", ""))
-    results = []
     print(result)
-    for items in result:
-        item = Product.objects.filter(name__istartswith=items)
-        if item:
-            results.append(item)
+    results = []
+    if result:
+        for items in result:
+            item = Product.objects.filter(name__istartswith=items)
+            if item:
+                results.append(item)
     # print(results) 
     quotes = Quote.objects.all()
     random_quotes = random.choice(quotes) if quotes.exists() else None
