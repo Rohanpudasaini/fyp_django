@@ -43,8 +43,11 @@
                       <p class="mt-1 text-sm text-gray-500">{{product.author}}, {{product.publicationx}}</p>
                     </div>
                     <div class="flex flex-1 items-end justify-between text-sm">
-                      <p class="text-gray-500">Qty 1</p>
-
+                      {% for key, value in quantities.items %}
+                      {% if key == product.id|slugify %}
+                        <p class="text-gray-500">Qty {{value}}</p>
+                      {% endif %}
+                      {% endfor %}
                       <div class="flex">
                         <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
                       </div>
