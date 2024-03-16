@@ -17,6 +17,7 @@
                     <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="/about">About</a></li>
                     {% if user.is_authenticated %}
                     <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="{% url 'logout' %}">Logout</a></li>
+                    <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="{% url 'update_user' %}">Update Profile</a></li>
                     {% else %}
                     <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="{% url 'login' %}">Login</a></li>
                     <li><a class="inline-block no-underline hover:text-black hover:underline py-2 px-4" href="{% url 'register' %}">Signup</a></li>

@@ -2,10 +2,10 @@ from django.shortcuts import redirect, render
 from .models import Product, Quote
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
-from django.contrib.auth.forms import UserCreationForm
-from django import forms
+# from django.contrib.auth.forms import UserCreationForm
+# from django import forms
 from django.contrib import messages
-from .forms import SignUpForm
+from .forms import SignUpForm, UpdateUserForm
 from store.recommend_main import recommend, df
 import random
 # Create your views here.
@@ -95,3 +95,19 @@ def recommended(request):
     quotes = Quote.objects.all()
     random_quotes = random.choice(quotes) if quotes.exists() else None
     return render(request, 'recommend.html',{'random_quotes':random_quotes, 'recommended':results})  
+
+def update_user(request):
+	if request.user.is_authenticated:
+		current_user = User.objects.get(id=request.user.id)
+		user_form = UpdateUserForm(request.POST or None, instance=current_user)
+
+		if user_form.is_valid():
+			user_form.save()
+
+			login(request, current_user)
+			messages.success(request, "User Has Been Updated!!")
+			return redirect('home')
+		return render(request, "update_user.html", {'user_form':user_form})
+	else:
+		messages.success(request, "You Must Be Logged In To Access That Page!!")
+		return redirect('home')
