@@ -21,31 +21,41 @@
           <div class="mt-8">
             <div class="flow-root">
               <ul role="list" class="-my-6 divide-y divide-gray-200">
+                {% if cart_products %}
+                {% for product in cart_products %}
                 <li class="flex py-6">
                   <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                    <img src="https://tailwindui.com/img/ecommerce-images/shopping-cart-page-04-product-02.jpg" alt="Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch." class="h-full w-full object-cover object-center">
+                    <img src="{{product.image.url}}" alt="{{product.name}}" class="h-full w-full object-cover object-center">
                   </div>
 
                   <div class="ml-4 flex flex-1 flex-col">
                     <div>
                       <div class="flex justify-between text-base font-medium text-gray-900">
                         <h3>
-                          <a href="#">Medium Stuff Satchel</a>
+                          <a href="#">{{product.name}}</a>
                         </h3>
-                        <p class="ml-4">$32.00</p>
+                        {% if product.is_sale%}
+                        <p class="ml-4">रु {{product.sale_price}}</p>
+                        {% else %}
+                        <p class="ml-4">रु {{product.price}}</p>
+                        {% endif %}
                       </div>
-                      <p class="mt-1 text-sm text-gray-500">Blue</p>
+                      <p class="mt-1 text-sm text-gray-500">{{product.author}}, {{product.publicationx}}</p>
                     </div>
                     <div class="flex flex-1 items-end justify-between text-sm">
-                      <p class="text-gray-500">Qty 1</p>
-
+                      {% for key, value in quantities.items %}
+                      {% if key == product.id|slugify %}
+                        <p class="text-gray-500">Qty {{value}}</p>
+                      {% endif %}
+                      {% endfor %}
                       <div class="flex">
                         <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
                       </div>
                     </div>
                   </div>
                 </li>
-
+                {% endfor %}
+                
               </ul>
             </div>
           </div>
@@ -71,4 +81,11 @@
           </div>
         </div>
       </div>
+      {% else %}
+      <div class="flex justify-center text-base font-medium text-gray-900">
+        <p>Empty Cart</p>
+      </div>
+      <p class="flex justify-center mt-3 text-sm text-gray-500">No items in your shopping cart.</p>
+
+      {% endif %}
   {% endblock %}
