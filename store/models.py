@@ -74,7 +74,7 @@ class Product(models.Model):
 
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     address = models.CharField(max_length=100, default= '', blank= True)
     phone = models.CharField(max_length=20, default= '', blank= True)
@@ -82,7 +82,7 @@ class Order(models.Model):
     status = models.BooleanField(default=False)
     
     def __str__(self):
-        return self.product
+        return f"{self.product.name} {self.customer.username}"
     
 
 

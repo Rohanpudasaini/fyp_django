@@ -1,5 +1,8 @@
-from django.shortcuts import redirect, render
-from .models import Product, Quote, Profile
+import json
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
+from cart.cart import Cart
+from .models import Order, Product, Quote, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
 from django.contrib import messages
@@ -43,6 +46,13 @@ def login_user(request):
         user = authenticate(request, username= username, password = password)
         if user is not None:
             login(request, user)
+            current_user = Profile.objects.get(user__id=request.user.id)
+            saved_cart = current_user.old_cart
+            if saved_cart:
+                converted_cart = json.loads(saved_cart)
+                cart = Cart(request)
+                for key,value in converted_cart.items():
+                    cart.db_add(product=key, quantity=value)
             messages.success(request, "Login Sucessfull, Welcome to Book Town")
             return redirect('home')
         else:
@@ -51,6 +61,36 @@ def login_user(request):
     else:
         return render(request, 'login.html', {'random_quotes':random_quotes})
     
+
+@login_required
+def add_order(request):
+    quotes = Quote.objects.all()
+    random_quotes = random.choice(quotes) if quotes.exists() else None
+    current_user = Profile.objects.get(user__id=request.user.id)
+    # print(type(current_user.user))
+    saved_cart = current_user.old_cart
+    if saved_cart:
+        converted_cart = json.loads(saved_cart)
+        cart = Cart(request)
+        for key, value in converted_cart.items():
+            product_to_add = Product.objects.get(id=int(key))
+            Order.objects.create(
+                product=product_to_add,
+                customer= current_user.user,
+                quantity = value,
+                address = current_user.address,
+                phone = current_user.phone,
+                )
+            cart.delete(key)
+            
+            
+        print("order Created")
+        messages.success(request, "Order created sucessfully, we will mail you the order detail in a while. Thankyou for  choosing us")
+        return render(request, 'cart_summary.html', {'random_quotes':random_quotes})
+    else:
+        messages.warning(request, "Empty Cart")
+        return redirect('home')
+        
 
 
 def logout_user(request):
@@ -155,9 +195,6 @@ def update_info(request):
         current_user = Profile.objects.get(user__id=request.user.id)
         # shipping_user = ShippingAddress.objects.get(user__id=request.user.id)
         form = UserInfoForm(request.POST or None, instance=current_user)
-        # Get User's Shipping Form
-        # shipping_form = ShippingForm(request.POST or None, instance=shipping_user)		
-        # if form.is_valid() or shipping_form.is_valid():
         if form.is_valid():
             # Save original form
             form.save()
@@ -171,3 +208,16 @@ def update_info(request):
     else:
         messages.success(request, "You Must Be Logged In To Access That Page!!")
         return redirect('home')
+
+def order_details(request):
+    quotes = Quote.objects.all()
+    random_quotes = random.choice(quotes) if quotes.exists() else None
+    if request.user.is_authenticated:
+        print(request.user.first_name)
+        # get_object_or_404(Order, id=product_id)
+        current_order = Order.objects.filter(customer=request.user)
+        # products = 
+        print(current_order)
+        return render(request, 'order_details.html',{'random_quotes':random_quotes,'orders':current_order, 'username':request.user.first_name})
+        
+    pass
