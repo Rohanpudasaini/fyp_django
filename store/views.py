@@ -2,13 +2,25 @@ from django.shortcuts import redirect, render
 from .models import Product, Quote, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
-# from django.contrib.auth.forms import UserCreationForm
-# from django import forms
 from django.contrib import messages
 from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, UserInfoForm
 from store.recommend_main import recommend, df
 import random
+from django.db.models import Q 
 # Create your views here.
+
+def search(request):
+    if request.method == "POST":
+        searched = request.POST['searched']
+        searched = Product.objects.filter(Q(name__icontains=searched) | Q(description__icontains=searched) | Q(author__icontains=searched))
+        if not searched:
+            messages.success(request, "That Product Does Not Exist...Please try Again.")
+            return render(request, "search.html", {})
+        else:
+            print(len(searched))
+            return render(request, "search.html", {'searched':searched})
+    else:
+        return render(request, "search.html", {})
 
 def home(request):
     products = Product.objects.all().order_by('-created_at')
