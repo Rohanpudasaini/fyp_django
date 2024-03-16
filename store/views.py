@@ -57,8 +57,8 @@ def register_user(request):
             password = form.cleaned_data['password1']
             user = authenticate(username= username, password = password)
             login(request,user)
-            messages.success(request, "Registration Sucessfull, Welcome to Book Town")
-            return redirect('home')
+            messages.success(request, "Registration Sucessfull, Please Fill out some additional informations.")
+            return redirect('update_info')
         else:
             for error in list(form.errors.values()):
                 messages.error(request, error)
