@@ -1,11 +1,11 @@
 from django.shortcuts import redirect, render
-from .models import Product, Quote
+from .models import Product, Quote, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User 
 # from django.contrib.auth.forms import UserCreationForm
 # from django import forms
 from django.contrib import messages
-from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm
+from .forms import SignUpForm, UpdateUserForm, ChangePasswordForm, UserInfoForm
 from store.recommend_main import recommend, df
 import random
 # Create your views here.
@@ -137,3 +137,25 @@ def update_password(request):
 	else:
 		messages.success(request, "You Must Be Logged In To View That Page...")
 		return redirect('home')
+
+def update_info(request):
+    if request.user.is_authenticated:
+        current_user = Profile.objects.get(user__id=request.user.id)
+        # shipping_user = ShippingAddress.objects.get(user__id=request.user.id)
+        form = UserInfoForm(request.POST or None, instance=current_user)
+        # Get User's Shipping Form
+        # shipping_form = ShippingForm(request.POST or None, instance=shipping_user)		
+        # if form.is_valid() or shipping_form.is_valid():
+        if form.is_valid():
+            # Save original form
+            form.save()
+            # Save shipping form
+            # shipping_form.save()
+
+            messages.success(request, "Your Info Has Been Updated!!")
+            return redirect('home')
+        # return render(request, "update_info.html", {'form':form, 'shipping_form':shipping_form})
+        return render(request, "update_info.html", {'form':form})
+    else:
+        messages.success(request, "You Must Be Logged In To Access That Page!!")
+        return redirect('home')
