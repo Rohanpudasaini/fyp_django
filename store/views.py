@@ -60,8 +60,9 @@ def register_user(request):
             messages.success(request, "Registration Sucessfull, Welcome to Book Town")
             return redirect('home')
         else:
-            messages.warning(request, "The User already exsist or your password is very similar to username")
-            return redirect('register')
+            for error in list(form.errors.values()):
+                messages.error(request, error)
+                return redirect('register')
     else:
         quotes = Quote.objects.all()
         random_quotes = random.choice(quotes) if quotes.exists() else None

@@ -14,12 +14,12 @@ class ChangePasswordForm(SetPasswordForm):
 		self.fields['new_password1'].widget.attrs['class'] = 'form-control'
 		self.fields['new_password1'].widget.attrs['placeholder'] = 'Password'
 		self.fields['new_password1'].label = ''
-		self.fields['new_password1'].help_text = '<span class="text-sm text-gray-500"><ul><li>Your password can\'t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can\'t be a commonly used password.</li><li>Your password can\'t be entirely numeric.</li></ul></span>'
+		self.fields['new_password1'].help_text = '<span class="text-xs text-gray-500"><ul><li>Your password can\'t be too similar to your other personal information.</li><li>Your password must contain at least 8 characters.</li><li>Your password can\'t be a commonly used password.</li><li>Your password can\'t be entirely numeric.</li></ul></span>'
 
 		self.fields['new_password2'].widget.attrs['class'] = 'form-control'
 		self.fields['new_password2'].widget.attrs['placeholder'] = 'Confirm Password'
 		self.fields['new_password2'].label = ''
-		self.fields['new_password2'].help_text = '<span class="text-sm text-gray-500"><small>Enter the same password as before, for verification.</small></span>'
+		self.fields['new_password2'].help_text = '<span class="text-xs text-gray-500"><small>Enter the same password as before, for verification.</small></span>'
 
 
 class UpdateUserForm(UserChangeForm):
@@ -47,7 +47,6 @@ class SignUpForm(UserCreationForm):
 	email = forms.EmailField(label="", widget=forms.TextInput(attrs={'class':'peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0', 'placeholder':'Email Address'}))
 	first_name = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class':'peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0', 'placeholder':'First Name'}))
 	last_name = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class':'peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0', 'placeholder':'Last Name'}))
-	phone = forms.CharField(label="", max_length=100, widget=forms.TextInput(attrs={'class':'peer block min-h-[auto] w-full rounded border-0 bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:placeholder:text-neutral-200 [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0', 'placeholder':'Phone Number'}))
 
 	class Meta:
 		model = User
