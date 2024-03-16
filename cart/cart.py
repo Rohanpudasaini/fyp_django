@@ -37,3 +37,20 @@ class Cart():
     def get_quants(self):
         quantities = self.cart
         return quantities
+    
+    def delete(self, product):
+        product_id = str(product)
+        # Delete from dictionary/cart
+        if product_id in self.cart:
+            del self.cart[product_id]
+        self.session.modified = True
+
+		# Deal with logged in user
+        # if self.request.user.is_authenticated:
+        #     # Get the current user profile
+        #     current_user = Profile.objects.filter(user__id=self.request.user.id)
+        #     # Convert {'3':1, '2':4} to {"3":1, "2":4}
+        #     carty = str(self.cart)
+        #     carty = carty.replace("\'", "\"")
+        #     # Save carty to the Profile Model
+        #     current_user.update(old_cart=str(carty))

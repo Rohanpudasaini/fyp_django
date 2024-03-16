@@ -1,17 +1,5 @@
 {%extends 'base.html'%} {% block content %} {% load static %} 
 <div class="relative z-10" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
-    <!--
-      Background backdrop, show/hide based on slide-over state.
-  
-      Entering: "ease-in-out duration-500"
-        From: "opacity-0"
-        To: "opacity-100"
-      Leaving: "ease-in-out duration-500"
-        From: "opacity-100"
-        To: "opacity-0"
-    -->
-    {% comment %} <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div> {% endcomment %}
-  
     <div class="flex  flex-col bg-white shadow-xl">
         <div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
           <div class="flex items-start justify-between">
@@ -32,7 +20,7 @@
                     <div>
                       <div class="flex justify-between text-base font-medium text-gray-900">
                         <h3>
-                          <a href="#">{{product.name}}</a>
+                          <a href="{% url 'product' product.id %}">{{product.name}}</a>
                         </h3>
                         {% if product.is_sale%}
                         <p class="ml-4">रु {{product.sale_price}}</p>
@@ -49,7 +37,7 @@
                       {% endif %}
                       {% endfor %}
                       <div class="flex">
-                        <button type="button" class="font-medium text-indigo-600 hover:text-indigo-500">Remove</button>
+                        <button type="button" data-index="{{product.id}}" class="font-medium text-red-600 delete-product">Remove</button>
                       </div>
                     </div>
                   </div>
@@ -88,4 +76,38 @@
       <p class="flex justify-center mt-3 text-sm text-gray-500">No items in your shopping cart.</p>
 
       {% endif %}
+
+      <script>
+        // Delete Item From Cart
+        
+          $(document).on('click', '.delete-product', function(e){
+            e.preventDefault();
+            console.log("Pressed")
+            // grab the product id
+            //var productid = $(this).data('index');
+          
+            $.ajax({
+            type: 'POST',
+            url: '{% url 'cart_delete' %}',
+            data: {
+              product_id: $(this).data('index'),
+              csrfmiddlewaretoken: '{{ csrf_token }}',
+              action: 'post'
+            },
+            success: function(json){
+                //console.log(json)
+                //document.getElementById("cart_quantity").textContent = json.qty
+                location.reload();
+            },
+          
+            error: function(xhr, errmsg, err){
+      
+        }
+      
+      
+        });
+      
+      })
+      
+      </script>
   {% endblock %}
