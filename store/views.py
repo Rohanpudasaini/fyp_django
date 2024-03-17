@@ -20,7 +20,7 @@ def search(request):
             messages.success(request, "That Product Does Not Exist...Please try Again.")
             return render(request, "search.html", {})
         else:
-            print(len(searched))
+            # print(len(searched))
             return render(request, "search.html", {'searched':searched})
     else:
         return render(request, "search.html", {})
@@ -102,7 +102,7 @@ def register_user(request):
     form = SignUpForm()
     if request.method == 'POST':
         form = SignUpForm(request.POST)
-        print(form)
+        # print(form)
         if form.is_valid():
             form.save()
             username = form.cleaned_data['username']
@@ -131,7 +131,6 @@ def product(request,pk):
             item = Product.objects.filter(name__istartswith=items)
             if item:
                 results.append(item)
-    # print(results) 
     quotes = Quote.objects.all()
     random_quotes = random.choice(quotes) if quotes.exists() else None
     return render(request,'product.html',{'product':product,'random_quotes':random_quotes,'recommended':results})
@@ -213,11 +212,11 @@ def order_details(request):
     quotes = Quote.objects.all()
     random_quotes = random.choice(quotes) if quotes.exists() else None
     if request.user.is_authenticated:
-        print(request.user.first_name)
+        # print(request.user.first_name)
         # get_object_or_404(Order, id=product_id)
         current_order = Order.objects.filter(customer=request.user)
         # products = 
-        print(current_order)
+        # print(current_order)
         return render(request, 'order_details.html',{'random_quotes':random_quotes,'orders':current_order, 'username':request.user.first_name})
         
     pass
