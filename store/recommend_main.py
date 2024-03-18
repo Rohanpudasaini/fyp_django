@@ -15,7 +15,6 @@ def recommend(df, book_title):
         if book_title in rare_books:
             print("rare books")
             most_common=pd.Series(common_books["Book-Title"].unique()).sample(3).values
-            # print("No Recommendation for that book")
             books = []
             for book in most_common:
                 books.append(book)
@@ -35,23 +34,9 @@ def recommend(df, book_title):
             similar_booksSorted=sorted(similar_books,key=lambda x:x[1],reverse=True)[1:5]
             books=[]
             for i in range(len(similar_booksSorted)):
-                # books.append(common_books[common_books["index"]==similar_booksSorted[i][0]]["Book-Title"].item())
                 book = common_books[common_books["index"]==similar_booksSorted[i][0]]["Book-Title"].item()
-                # if len(book) <= 5:
-                #     book = " ".join(book)
-                # else:
-                #     book = " ".join(book[:5])
                 books.append(book)
             print(books)
             return(books)
     else:
         print("We currently have no data of that book.")
-df = pd.read_csv('store/DataFrame.csv',index_col=0)
-# book = input("Enter the book name: ").strip()
-# result = recommend(df,book)
-# if result:
-#     print(result)
-
-        
-    
-    
